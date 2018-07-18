@@ -4,7 +4,7 @@ namespace mumbaicat\makeapidoc;
 class ApiDoc
 {
 
-    private $mainRegex = '/(\/\*\*.*?\*\sapi.*?\*\/\s*(public|private|protected)?\s*function\s+.*?\s*?\()/s';
+    private $mainRegex = '/(\/\*\*((?!(\*\/)).)*\*\sapi.*?\*\/\s*(public|private|protected)?\s*function\s+.*?\s*?\()/s';
     protected $documentPath;
     protected $savePath;
     protected $name = 'api';
@@ -33,6 +33,15 @@ class ApiDoc
      */
     public function setName($name){
         $this->name = $name;
+    }
+
+    /**
+     * 设置项目描述
+     * @param string $content 项目描述
+     * @return void
+     */
+    public function setContent($content){
+        $this->content = $content;
     }
 
     /**
@@ -327,6 +336,7 @@ class ApiDoc
         }
         $tempData = file_get_contents(dirname(__FILE__).DIRECTORY_SEPARATOR.'temp.html');
         $tempData = str_replace('{name}',$this->name,$tempData);
+        $tempData = str_replace('{content}',$this->content,$tempData);
         $tempData = str_replace('{main}',$inputData,$tempData);
         $tempData = str_replace('{right}',$this->makeRight($rightList),$tempData);
         $tempData = str_replace('{date}',date('Y-m-d H:i:s'),$tempData);
